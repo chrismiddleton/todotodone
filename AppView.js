@@ -98,12 +98,10 @@ class AppView extends React.Component {
 				<ol>
 				{this.state.data.tasks.slice().sort((a, b) => this.taskComparator.compare(a, b)).map(task => (
 					<li key={task._id} className={task.done ? "done" : ""}>
-						<label>
-							<input type="checkbox" defaultChecked={task.done} onClick={(event) => this.toggleDone(event, task)} /> 
-							<span>{this.renderTaskDesc(task)}</span>
-							<span className="due-date">{task.due ? ` (due ${task.due})` : ""}</span>
-							<span className="when">{task.when ? ` (${task.when})` : ""}</span>
-						</label>
+						<input type="checkbox" defaultChecked={task.done} onClick={(event) => this.toggleDone(event, task)} /> 
+						<span>{this.renderTaskDesc(task)}</span>
+						<span className="due-date">{task.due ? ` (due ${task.due})` : ""}</span>
+						<span className="when">{task.when ? ` (${task.when})` : ""}</span>
 					</li>
 				))}
 				</ol>
