@@ -1,4 +1,4 @@
-import Comparator from './Comparator.js'
+// import Comparator from './Comparator.js'
 
 // TODO: Add interface for adding new records through the UI
 // TODO: Put when and due events together
@@ -117,3 +117,5 @@ class AppView extends React.Component {
 		)
 	}
 }
+
+// export default AppView

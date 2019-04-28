@@ -1,4 +1,4 @@
-import compare from './compare.js'
+// import compare from './compare.js'
 
 class Comparator {
 	constructor(comparator) {
@@ -21,4 +21,4 @@ class Comparator {
 	}
 }
 
-export default Comparator
+// export default Comparator
