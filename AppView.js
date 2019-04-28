@@ -1,11 +1,5 @@
 // import Comparator from './Comparator.js'
 
-// TODO: Add interface for adding new records through the UI
-// TODO: Put when and due events together
-// TODO: Add facilities for marking events as done - maybe calculate a "nextDue" for such events so that when they're marked as done, they don't really go away, but just move down in the list
-// TODO: Allow importing and exporting from a file instead of just copy/paste
-// TODO: handle other due/when phrases like "2020 and every _ years thereafter" or "every feb 23"
-
 class AppView extends React.Component {
 	constructor(props) {
 		super(props)
