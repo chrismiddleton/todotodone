@@ -13,8 +13,7 @@ class AppView extends React.Component {
 			}
 		}
 		this.taskComparator = Comparator.comparing(task => task.done ? 1 : 0)
-			.andThen(Comparator.comparing(task => task.due ? (new Date(task.due)).getTime() : Infinity))
-			.andThen(Comparator.comparing(task => task.when ? (new Date(task.when)).getTime() : Infinity))
+			.andThen(Comparator.comparing(task => task.due ? (new Date(task.due)).getTime() : task.when ? (new Date(task.when)).getTime() : Infinity))
 				
 	}
 	
