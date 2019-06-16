@@ -1,6 +1,10 @@
-// import Comparator from './Comparator.js'
+// import TaskScheduler from './TaskScheduler.js'
+// import TaskSorter from './TaskSorter.js'
+// import TimelessDate from './TimelessDate.js'
+// import TodoData from './TodoData.js'
 
 class AppView extends React.Component {
+
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -12,25 +16,10 @@ class AppView extends React.Component {
 				})
 			}
 		}
-		this.taskComparator = Comparator.comparing(task => task.done ? 1 : 0)
-			.andThen(Comparator.comparing(task => task.due ? (new Date(task.due)).getTime() : task.when ? (new Date(task.when)).getTime() : Infinity))
-				
 	}
 	
 	exportData() {
-		return JSON.stringify({
-			...this.state.data,
-			tasks: this.state.data.tasks.slice()
-				.sort((a, b) => this.taskComparator.compare(a, b))
-				.map(task => {
-					const copy = {...task}
-					delete copy._id
-					if (!copy.done) {
-						delete copy.done
-					}
-					return copy
-				})
-		}, null, 4)
+		return TodoData.stringify(this.state.data)
 	}
 	
 	exportDataToBox() {
@@ -40,17 +29,10 @@ class AppView extends React.Component {
 	}
 	
 	importData(string) {
-		const imported = JSON.parse(string)
-		const uniquePrefix = String(Date.now())
 		this.setState((state, props) => {
 			return {
 				...state,
-				data: {
-					...imported,
-					tasks: imported.tasks.map((task, index) => {
-						return {...task, _id: task.id == null ? (uniquePrefix + index) : task.id}
-					})
-				}
+				data: TodoData.parse(string)
 			}
 		})
 	}
@@ -68,6 +50,8 @@ class AppView extends React.Component {
 	}
 	
 	toggleDone(event, targetTask) {
+		let flipDone = true
+		const today = TimelessDate.today()
 		this.setState((state, props) => {
 			return {
 				...state,
@@ -75,7 +59,17 @@ class AppView extends React.Component {
 					...state.data,
 					tasks: state.data.tasks.map(task => {
 						if (task === targetTask) {
-							return {...task, done: !targetTask.done}
+							flipDone = !task.nextDue && !task.nextWhen
+							const done = flipDone ? !targetTask.done : targetTask.done
+							let newTask = {...task,
+								done: done,
+								lastCompleted: today.toString()
+							}
+							if (!done && newTask.rejected) {
+								delete newTask.rejected
+							}
+							newTask = TaskScheduler.scheduleNextDate(newTask, today, true)
+							return newTask
 						} else {
 							return task
 						}
@@ -83,6 +77,9 @@ class AppView extends React.Component {
 				}
 			 }
 		})
+		if (!flipDone) {
+			event.preventDefault()
+		}
 	}
 	
 	render() {
@@ -95,9 +92,9 @@ class AppView extends React.Component {
 					<input type="button" value="Export" onClick={() => this.exportDataToBox()} />
 				</p>
 				<ol>
-				{this.state.data.tasks.slice().sort((a, b) => this.taskComparator.compare(a, b)).map(task => (
-					<li key={task._id} className={task.done ? "done" : ""}>
-						<input type="checkbox" defaultChecked={task.done} onClick={(event) => this.toggleDone(event, task)} /> 
+				{this.state.data.tasks.cascade(TaskSorter.sort).map(task => (
+					<li key={task._id} className={task.done ? "done" : task.rejected ? "rejected": ""}>
+						<input type="checkbox" defaultChecked={task.done || task.rejected} onClick={(event) => this.toggleDone(event, task)} />
 						<span>{' '}</span>
 						<span>{this.renderTaskDesc(task)}</span>
 						<span className="due-date">{task.due ? ` (due ${task.due})` : ""}</span>
@@ -108,6 +105,7 @@ class AppView extends React.Component {
 			</div>
 		)
 	}
+	
 }
 
 // export default AppView

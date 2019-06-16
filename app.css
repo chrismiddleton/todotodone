@@ -9,6 +9,11 @@
   color: rgba(0, 0, 0, 0.2);
 }
 
+.rejected {
+	text-decoration: line-through;
+	color: rgba(255, 75, 50, 0.2);
+}
+
 .due-date, .when {
 	font-size: 0.7em;
 }
