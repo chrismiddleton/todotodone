@@ -14,7 +14,7 @@ class TodoData {
 	static stringify(data) {
 		return JSON.stringify({
 			...data,
-			tasks: data.cascade(TaskSorter.sort)
+			tasks: data.tasks.cascade(TaskSorter.sort)
 				.map(task => {
 					const copy = {...task}
 					delete copy._id
