@@ -12,13 +12,15 @@ class TaskScheduler {
 	static parseEveryMonthDate(frequency, today, lastCompleted) {
 		const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
 		const monthAbbrevs = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
-		const monthDayRegex = /^(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\s+0*([1-9][0-9]?)/i
+		const monthDayRegex = /^(\w+)\s+0*([1-9][0-9]?)/i
 		const monthMatch = frequency.match(monthDayRegex)
 		if (!monthMatch) return null
 		const monthName = monthMatch[1]
 		const day = monthMatch[2]
 		let month = months.indexOf(monthName)
 		if (month === -1) month = monthAbbrevs.indexOf(monthName)
+		// no match
+		if (month === -1) return null
 		let date = new TimelessDate((lastCompleted ? (lastCompleted.year + 1) : today.year), month, day)
 		if (date.compareTo(today) < 0) {
 			// TODO: handle leap years - should just use moment.js
