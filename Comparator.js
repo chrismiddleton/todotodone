@@ -10,6 +10,9 @@ class Comparator {
 	andThenComparing(func) {
 		return new Comparator((a, b) => this.comparator(a, b) || compare(func(a), func(b)))
 	}
+	andThenCompare(func) {
+		return new Comparator((a, b) => this.comparator(a, b) || func(a, b))
+	}
 	static comparing(func) {
 		return new Comparator((a, b) => compare(func(a), func(b)))
 	}

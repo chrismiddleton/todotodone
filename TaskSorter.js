@@ -5,26 +5,28 @@ class TaskSorter {
 	static compareTasks(a, b) {
 		return TaskSorter._comparator.compare(a, b)
 	}
+	
+	static getDateField(task) {
+		return task.nextDue || task.nextWhen || task.due || task.when
+	}
 
 	static getTaskComparator() {
 		return Comparator.comparing(task => (task.done || task.rejected) ? 1 : 0)
 			.andThen(Comparator.comparing(task => {
-				let result = task.nextDue ? 
-					(new Date(task.nextDue)).getTime() :
-					(task.nextWhen ? 
-						(new Date(task.nextWhen)).getTime() :
-						(task.due ? 
-							(new Date(task.due)).getTime() :
-							(task.when ? 
-								(new Date(task.when)).getTime() :
-								Infinity)))
+				const dateField = TaskSorter.getDateField(task)
+				let result = dateField ? (new Date(dateField)).getTime() : Infinity
 				if (isNaN(result)) result = Infinity
 				return result
 			}))
 			.andThen(Comparator.comparing(task => {
-				(typeof task.due === 'string' && ['soon', 'asap'].indexOf(task.due.toLowerCase()) !== -1) ? 0 : 1
+				return (typeof task.due === 'string' && 
+					['soon', 'asap'].indexOf(task.due.toLowerCase()) !== -1) ? 0 : 1
 			}))
-			.andThen(Comparator.comparing(task => task.nextDue || task.nextWhen || task.due || task.when))
+			.andThenCompare((a, b) => {
+				const af = TaskSorter.getDateField(a)
+				const bf = TaskSorter.getDateField(b)
+				return (af && bf) ? compare(af, bf) : (af ? -1 : (bf ? 1 : 0))
+			})
 			.andThen(Comparator.comparing(task => task._id))
 	}
 	

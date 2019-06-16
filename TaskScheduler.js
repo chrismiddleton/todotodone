@@ -22,7 +22,7 @@ class TaskScheduler {
 		let date = new TimelessDate((lastCompleted ? (lastCompleted.year + 1) : today.year), month, day)
 		if (date.compareTo(today) < 0) {
 			// TODO: handle leap years - should just use moment.js
-			date = new TimelessDate(today.year + 1, day.month, day.date)
+			date = new TimelessDate(today.year + 1, month, day)
 		}
 		return date.toString()
 	}
