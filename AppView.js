@@ -88,7 +88,7 @@ class AppView extends React.Component {
 	render() {
 		return (
 			<div>
-				<h2>Todos:</h2>
+				<h3>Todos:</h3>
 				<p><textarea id="importExportBox" rows="5" cols="60"></textarea></p>
 				<p>
 					<input type="button" value="Import" onClick={() => this.importDataFromBox()} />
