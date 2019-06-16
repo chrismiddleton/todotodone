@@ -98,6 +98,7 @@ class AppView extends React.Component {
 				{this.state.data.tasks.slice().sort((a, b) => this.taskComparator.compare(a, b)).map(task => (
 					<li key={task._id} className={task.done ? "done" : ""}>
 						<input type="checkbox" defaultChecked={task.done} onClick={(event) => this.toggleDone(event, task)} /> 
+						<span>{' '}</span>
 						<span>{this.renderTaskDesc(task)}</span>
 						<span className="due-date">{task.due ? ` (due ${task.due})` : ""}</span>
 						<span className="when">{task.when ? ` (${task.when})` : ""}</span>
