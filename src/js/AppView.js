@@ -122,23 +122,22 @@ class AppView extends React.Component {
 					<input type="button" value="Import" onClick={() => this.importDataFromBox()} />
 					<input type="button" value="Export" onClick={() => this.exportDataToBox()} />
 				</p>
-				<ol className='table'>
+				<ol className='table todos'>
 					<li className='row'>
-						<div className='cell'>Complete&nbsp;✔</div>
-						<div className='cell no-due-date-cell'>No Due Date&nbsp;⛱️</div>
-						<div className='cell'>Description</div>
+						<div className='cell header-cell'>Done</div>
+						<div className='cell no-due-date-cell header-cell'>Any Time&nbsp;⛱️</div>
+						<div className='cell header-cell'>Description</div>
 					</li>
 				{this.state.data.tasks.cascade(TaskSorter.sort).map(task => (
 					<li key={task._id} className={this.taskClassName(task)}>
 						<div className='cell'>
 							<input type="checkbox"
 								defaultChecked={task.done || task.rejected}
-								onClick={(event) => this.toggleDone(event, task)} />&nbsp;<span className='complete-icon'>✔</span>
+								onClick={(event) => this.toggleDone(event, task)} />
 						</div>
 						<div className='cell'>
-							<input type="checkbox"
-								defaultChecked={task.due === false}
-								onClick={(event) => this.toggleNoDueDate(event, task)} />&nbsp;<span className='no-due-date-icon'>⛱️</span>
+							<span className={'no-due-date-icon' + (task.due === false ? ' checked' : '')}
+								onClick={(event) => this.toggleNoDueDate(event, task)}>⛱️</span>
 						</div>
 						<div className='cell desc'>
 							{this.renderTaskDesc(task)}
