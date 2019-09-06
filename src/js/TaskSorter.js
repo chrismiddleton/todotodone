@@ -11,7 +11,7 @@ class TaskSorter {
 	}
 
 	static getTaskComparator() {
-		return Comparator.comparing(task => (task.done || task.rejected) ? 1 : 0)
+		return Comparator.comparing(task => (task.done || task.rejected) ? 2 : (task.due != null || task.when != null ? 1 : 0))
 			.andThen(Comparator.comparing(task => {
 				const dateField = TaskSorter.getDateField(task)
 				let result = dateField ? (new Date(dateField)).getTime() : Infinity
