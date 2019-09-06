@@ -111,9 +111,6 @@ class AppView extends React.Component {
 				}
 			 }
 		})
-		if (!flipNoDueDate) {
-			event.preventDefault()
-		}
 	}
 	
 	render() {
