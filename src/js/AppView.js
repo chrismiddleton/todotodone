@@ -49,6 +49,16 @@ class AppView extends React.Component {
 		}
 	}
 	
+	taskClassName(task) {
+		const classes = ['row']
+		if (task.done) classes.push("done")
+		else if (task.rejected) classes.push("rejected")
+		else classes.push('incomplete')
+		if (task.due === false) classes.push("no-due-date")
+		else if (task.when == null && task.due == null) classes.push("unknown-due-date")
+		return classes.join(" ")
+	}
+	
 	toggleDone(event, targetTask) {
 		let flipDone = true
 		const today = TimelessDate.today()
@@ -82,6 +92,30 @@ class AppView extends React.Component {
 		}
 	}
 	
+	toggleNoDueDate(event, targetTask) {
+		this.setState((state, props) => {
+			return {
+				...state,
+				data: {
+					...state.data,
+					tasks: state.data.tasks.map(task => {
+						if (task === targetTask) {
+							return {
+								...task,
+								due: targetTask.due === false ? undefined : false
+							}
+						} else {
+							return task
+						}
+					})
+				}
+			 }
+		})
+		if (!flipNoDueDate) {
+			event.preventDefault()
+		}
+	}
+	
 	render() {
 		return (
 			<div>
@@ -91,14 +125,33 @@ class AppView extends React.Component {
 					<input type="button" value="Import" onClick={() => this.importDataFromBox()} />
 					<input type="button" value="Export" onClick={() => this.exportDataToBox()} />
 				</p>
-				<ol>
+				<ol className='table'>
+					<li className='row'>
+						<div className='cell'>Complete</div>
+						<div className='cell no-due-date-cell'>No Due Date</div>
+						<div className='cell'>Description</div>
+					</li>
 				{this.state.data.tasks.cascade(TaskSorter.sort).map(task => (
-					<li key={task._id} className={task.done ? "done" : task.rejected ? "rejected": ""}>
-						<input type="checkbox" defaultChecked={task.done || task.rejected} onClick={(event) => this.toggleDone(event, task)} />
-						<span>{' '}</span>
-						<span>{this.renderTaskDesc(task)}</span>
-						<span className="due-date">{task.due ? ` (due ${task.due})` : ""}</span>
-						<span className="when">{task.when ? ` (${task.when})` : ""}</span>
+					<li key={task._id} className={this.taskClassName(task)}>
+						<div className='cell'>
+							<input type="checkbox"
+								defaultChecked={task.done || task.rejected}
+								onClick={(event) => this.toggleDone(event, task)} />
+						</div>
+						<div className='cell'>
+							<input type="checkbox"
+								defaultChecked={task.due === false}
+								onClick={(event) => this.toggleNoDueDate(event, task)} />
+						</div>
+						<div className='cell'>
+							{this.renderTaskDesc(task)}
+							<span className="due-date">{task.due ? ` (due ${task.due})` : ''}</span>
+							<span className="when">{task.when ? 
+								` (${task.when + (task.where ? (' @ ' + task.where) : '')})` :
+								''
+							}</span>
+							<span className="at">{task.at ? ` (complete @ ${task.at})` : ''}</span>
+						</div>
 					</li>
 				))}
 				</ol>
