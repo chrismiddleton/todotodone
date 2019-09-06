@@ -27,6 +27,9 @@ class TaskSorter {
 				const bf = TaskSorter.getDateField(b)
 				return (af && bf) ? compare(af, bf) : (af ? -1 : (bf ? 1 : 0))
 			})
+			.andThen(Comparator.comparing(task => {
+				return task.due === false ? 1 : 0
+			}))
 			.andThen(Comparator.comparing(task => task.desc ? task.desc.toLowerCase() : ""))
 	}
 	
