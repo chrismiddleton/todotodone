@@ -124,8 +124,8 @@ class AppView extends React.Component {
 				</p>
 				<ol className='table'>
 					<li className='row'>
-						<div className='cell'>Complete</div>
-						<div className='cell no-due-date-cell'>No Due Date</div>
+						<div className='cell'>Complete&nbsp;✔</div>
+						<div className='cell no-due-date-cell'>No Due Date&nbsp;⛱️</div>
 						<div className='cell'>Description</div>
 					</li>
 				{this.state.data.tasks.cascade(TaskSorter.sort).map(task => (
@@ -133,14 +133,14 @@ class AppView extends React.Component {
 						<div className='cell'>
 							<input type="checkbox"
 								defaultChecked={task.done || task.rejected}
-								onClick={(event) => this.toggleDone(event, task)} />
+								onClick={(event) => this.toggleDone(event, task)} />&nbsp;<span className='complete-icon'>✔</span>
 						</div>
 						<div className='cell'>
 							<input type="checkbox"
 								defaultChecked={task.due === false}
-								onClick={(event) => this.toggleNoDueDate(event, task)} />
+								onClick={(event) => this.toggleNoDueDate(event, task)} />&nbsp;<span className='no-due-date-icon'>⛱️</span>
 						</div>
-						<div className='cell'>
+						<div className='cell desc'>
 							{this.renderTaskDesc(task)}
 							<span className="due-date">{task.due ? ` (due ${task.due})` : ''}</span>
 							<span className="when">{task.when ? 

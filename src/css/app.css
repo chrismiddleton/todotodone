@@ -4,12 +4,12 @@
   font-size: 0.9em;
 }
 
-.done {
+.done .desc {
   text-decoration: line-through;
   color: rgba(0, 0, 0, 0.2);
 }
 
-.rejected {
+.rejected .desc {
 	text-decoration: line-through;
 	color: rgba(255, 75, 50, 0.2);
 }
@@ -43,4 +43,12 @@
 
 .no-due-date-cell {
 	max-width: 50px;
+}
+
+.complete-icon, .no-due-date-icon {
+	opacity: 0.25
+}
+
+input:checked + .complete-icon, input:checked + .no-due-date-icon {
+	opacity: 1
 }
