@@ -65,6 +65,10 @@
 	vertical-align: middle;
 }
 
+.todos {
+	padding-left: 0;
+}
+
 .todos .cell:nth-child(1), .todos .cell:nth-child(2) {
 	text-align: center;
 }
