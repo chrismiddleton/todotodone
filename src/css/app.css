@@ -52,3 +52,7 @@
 input:checked + .complete-icon, input:checked + .no-due-date-icon {
 	opacity: 1
 }
+
+.done .complete-icon, .rejected .complete-icon {
+	display: none;
+}
