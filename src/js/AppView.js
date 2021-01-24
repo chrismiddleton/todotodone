@@ -18,6 +18,23 @@ class AppView extends React.Component {
 		}
 	}
 	
+	addNewTodo() {
+		const input = document.getElementById("addNewTodoInput");
+		const newTodo = input.value.trim();
+		if (!newTodo) {
+			alert("The new todo is blank.");
+			return;
+		}
+		this.setState((state, props) => ({
+			...state,
+			data: {
+				...state.data,
+				tasks: [...state.data.tasks, {desc: newTodo, _id: state.data.tasks.length + 1}]
+			}
+		}));
+		input.value = '';
+	}
+	
 	exportData() {
 		return TodoData.stringify(this.state.data)
 	}
@@ -38,6 +55,9 @@ class AppView extends React.Component {
 	}
 	
 	importDataFromBox() {
+		if (this.state.data.tasks.length > 0 && !confirm("This will replace the tasks already entered with the imported tasks. Existing tasks below will be removed. Proceed anyway?")) {
+			return;
+		}
 		this.importData(document.getElementById("importExportBox").value)
 	}
 	
@@ -121,6 +141,12 @@ class AppView extends React.Component {
 				<p>
 					<input type="button" value="Import" onClick={() => this.importDataFromBox()} />
 					<input type="button" value="Export" onClick={() => this.exportDataToBox()} />
+				</p>
+				<p>
+					<input id="addNewTodoInput" type="text"
+						onKeyUp={(event) => { if (event.code === 'Enter') { this.addNewTodo(); } }} />
+					<input id="addNewTodoButton" type="button" value="Add New Todo"
+						onClick={() => this.addNewTodo()} />
 				</p>
 				<ol className='table todos'>
 					<li className='row'>
