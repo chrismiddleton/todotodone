@@ -125,7 +125,8 @@ class AppView extends React.Component {
 				<ol className='table todos'>
 					<li className='row'>
 						<div className='cell header-cell'>Done</div>
-						<div className='cell no-due-date-cell header-cell'>Any Time&nbsp;⛱️</div>
+						<div className='cell recurring-cell header-cell'>⟲</div>
+						<div className='cell no-due-date-cell header-cell'>Any Time ⛱️</div>
 						<div className='cell header-cell'>Description</div>
 					</li>
 				{this.state.data.tasks.cascade(TaskSorter.sort).map(task => (
@@ -135,9 +136,15 @@ class AppView extends React.Component {
 								defaultChecked={task.done || task.rejected}
 								onClick={(event) => this.toggleDone(event, task)} />
 						</div>
-						<div className='cell'>
+						<div className='cell icon-cell recurring-cell'>
+							<span
+								className={'recurring-icon' + ((task.nextDue || task.nextWhen) ? ' checked' : '')}
+								>⟲</span>
+						</div>
+						<div className='cell icon-cell no-due-date-cell'>
 							<span className={'no-due-date-icon' + (task.due === false ? ' checked' : '')}
-								onClick={(event) => this.toggleNoDueDate(event, task)}>⛱️</span>
+								onClick={(event) => this.toggleNoDueDate(event, task)}
+								>⛱️</span>
 						</div>
 						<div className='cell desc'>
 							{this.renderTaskDesc(task)}

@@ -41,20 +41,28 @@
 	border-radius: 2px;
 }
 
-.no-due-date-cell {
+.icon-cell {
+	text-align: center;
+}
+
+.no-due-date-cell, .recurring-cell {
 	max-width: 50px;
 }
 
-.no-due-date-icon {
-	opacity: 0.25
+.no-due-date-icon, .recurring-icon {
+	opacity: 0.25;
 }
 
-.no-due-date-icon {
+.recurring-cell {
+	font-size: 1.5em;
+}
+
+.no-due-date-icon, .recurring-icon {
 	cursor: pointer;
 }
 
-.no-due-date-icon.checked {
-	opacity: 1
+.no-due-date-icon.checked, .recurring-icon.checked {
+	opacity: 1;
 }
 
 .done .done-icon, .rejected .done-icon {
